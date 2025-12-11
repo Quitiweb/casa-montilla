@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Montilla: Casa Lobero 19</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="ui-controls">
+        <h1>Proyecto Montilla 🏡</h1>
+        <p>Arrastra para rotar la casa. Haz clic en los puntos para ver detalles.</p>
+    </div>
+
+    <div id="scene">
+        <div id="house">
+
+            <div class="floor" id="floor-2" style="--i:2">
+                <div class="label">Planta 2: Azotea</div>
+                <img src="img/croquis-segunda-planta.jpg" alt="Croquis Planta 2" class="map">
+
+                <div class="hotspot" style="top: 70%; left: 60%;" data-room="azotea">
+                    <span class="tooltip">Azotea / Solarium</span>
+                </div>
+            </div>
+
+            <div class="floor" id="floor-1" style="--i:1">
+                <div class="label">Planta 1: Habitaciones & Gaming</div>
+                <img src="img/croquis-primera-planta.jpg" alt="Croquis Planta 1" class="map">
+
+                <div class="hotspot" style="top: 30%; left: 30%;" data-room="terraza1">
+                    <span class="tooltip">Terraza Media</span>
+                </div>
+                 <div class="hotspot" style="top: 70%; left: 20%;" data-room="bano_interior">
+                    <span class="tooltip">Baño Planta 1</span>
+                </div>
+            </div>
+
+            <div class="floor" id="floor-0" style="--i:0">
+                <div class="label">Planta Baja: Salón & Cocina</div>
+                <img src="img/croquis-planta-baja.jpg" alt="Croquis Planta Baja" class="map">
+
+                <div class="hotspot" style="top: 85%; left: 15%;" data-room="entrada">
+                    <span class="tooltip">Recibidor</span>
+                </div>
+                <div class="hotspot" style="top: 70%; left: 30%;" data-room="hall">
+                    <span class="tooltip">Hall Escaleras</span>
+                </div>
+                <div class="hotspot" style="top: 50%; left: 30%;" data-room="salon">
+                    <span class="tooltip">Salón</span>
+                </div>
+                <div class="hotspot" style="top: 35%; left: 35%;" data-room="cocina">
+                    <span class="tooltip">Cocina</span>
+                </div>
+                 <div class="hotspot" style="top: 80%; left: 65%;" data-room="garaje">
+                    <span class="tooltip">Garaje</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">Nombre de la Habitación</h2>
+            <div class="comparison-container">
+                <div class="photo-box">
+                    <h3>Estado Actual</h3>
+                    <img id="img-before" src="" alt="Antes">
+                </div>
+                <div class="photo-box">
+                    <h3>Diseño Futuro</h3>
+                    <img id="img-after" src="" alt="Después">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
