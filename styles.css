@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     background: #1a1a1a;
@@ -16,6 +20,30 @@ body.modal-open {
     left: 20px;
     z-index: 100;
     pointer-events: none;
+}
+
+.project-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.project-title .title-text {
+    font-weight: 700;
+}
+
+.project-title .title-icon {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
 /* Escenario 3D */
@@ -145,14 +173,14 @@ body.modal-open {
     position: relative;
     margin: 0 auto;
     padding: 20px;
-    width: 80%;
-    max-width: 1000px;
+    width: min(900px, calc(100vw - 40px));
     background: #222;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 5px 30px rgba(0,0,0,0.5);
     max-height: 90vh;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .close-btn {
@@ -275,10 +303,21 @@ body.modal-open {
     }
 
     .ui-controls {
-        width: calc(100vw - 40px);
-        left: 50%;
-        transform: translateX(-50%);
-        text-align: center;
+        width: auto;
+        left: 20px;
+        transform: none;
+        text-align: left;
+    }
+
+    .ui-controls p,
+    .project-title .title-text {
+        display: none;
+    }
+
+    .project-title .title-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 2rem;
     }
 
     .comparison-container {
@@ -291,8 +330,8 @@ body.modal-open {
     }
 
     .modal-content {
-        width: 100%;
-        max-width: 600px;
+        width: calc(100vw - 30px);
+        max-width: none;
     }
 
     .viewer-content {
