@@ -56,6 +56,11 @@ const roomsData = {
         before: "img/11-terraza.jpeg",
         after: "img/design/11-terraza-design.jpeg"
     },
+        "habitacion_gaming": {
+            title: "Habitación Gaming",
+            before: "img/09-habitacion-gaming-v1.png",
+            after: "img/design/09-habitacion-gaming-v1-design.png"
+        },
     "azotea": {
         title: "Azotea Superior",
         before: "img/12-azotea-v1.jpeg",
