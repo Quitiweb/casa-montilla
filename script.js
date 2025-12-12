@@ -65,6 +65,11 @@ const roomsData = {
         title: "Azotea Superior",
         before: "img/12-azotea-v1.jpeg",
         after: "img/design/12-azotea-v2-design.jpeg"
+    },
+    "habitacion_v1": {
+        title: "Habitación Principal",
+        before: "img/08-habitacion-v1.jpeg",
+        after: "img/design/08-habitacion-v1-design.png"
     }
 };
 
