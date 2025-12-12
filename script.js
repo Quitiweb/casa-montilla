@@ -14,7 +14,7 @@ const roomsData = {
     "salon": {
         title: "Salón con Chimenea",
         before: "img/03-salon-chimenea.jpeg",
-        after: "img/design/03-salon-design.jpeg"
+        after: "img/design/03-salon-chimenea-design.jpeg"
     },
     "cocina": {
         title: "Cocina",
@@ -23,12 +23,12 @@ const roomsData = {
     },
     "garaje": {
         title: "Garaje",
-        before: "img/07-garaje-v1.jpeg",
-        after: "img/design/07-garaje-v1-design.jpeg"
+        before: "img/07-garaje-v2.jpeg",
+        after: "img/design/07-garaje-v2-design.jpeg"
     },
     "bano_interior": {
         title: "Baño Planta 1",
-        before: "img/10-baño-interior-v1.jpeg", // Asumo que es v1 o v2, ajusta si falla
+        before: "img/10-baño-interior-v1.jpeg",
         after: "img/design/10-baño-interior-design.jpeg"
     },
     "terraza1": {
