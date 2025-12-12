@@ -21,6 +21,11 @@ const roomsData = {
         before: "img/06-cocina.jpeg",
         after: "img/design/06-cocina-design.jpeg"
     },
+    "bano_exterior": {
+        title: "Baño Exterior",
+        before: "img/05-baño-exterior.jpeg",
+        after: "img/design/05-baño-exterior-design.png"
+    },
     "garaje": {
         title: "Garaje",
         before: "img/07-garaje-v2.jpeg",
