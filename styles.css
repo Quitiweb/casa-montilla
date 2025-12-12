@@ -1,9 +1,13 @@
 body {
     margin: 0;
-    overflow: hidden;
     background: #1a1a1a;
     font-family: 'Montserrat', sans-serif;
     color: white;
+    overflow-x: hidden;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 .ui-controls {
@@ -24,6 +28,7 @@ body {
     perspective: 1500px; /* Profundidad */
     overflow: hidden;
     cursor: grab;
+    touch-action: none;
 }
 
 #scene:active {
@@ -124,13 +129,21 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
+    padding: 20px;
     background-color: rgba(0,0,0,0.85);
     backdrop-filter: blur(5px);
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
 }
 
 .modal-content {
     position: relative;
-    margin: 5% auto;
+    margin: 0 auto;
     padding: 20px;
     width: 80%;
     max-width: 1000px;
@@ -138,6 +151,8 @@ body {
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close-btn {
@@ -176,4 +191,127 @@ body {
 .photo-box h3 {
     color: #4CAF50;
     margin-bottom: 10px;
+}
+
+.image-viewer {
+    display: none;
+    position: fixed;
+    z-index: 300;
+    inset: 0;
+    padding: 20px;
+    background: rgba(0,0,0,0.95);
+    align-items: center;
+    justify-content: center;
+}
+
+.image-viewer.show {
+    display: flex;
+}
+
+.viewer-content {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.viewer-content img {
+    width: 100%;
+    max-height: calc(90vh - 120px);
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+}
+
+.viewer-caption {
+    font-size: 0.95rem;
+    color: #ddd;
+    text-align: center;
+}
+
+.viewer-close {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    font-size: 36px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.viewer-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: #fff;
+    font-size: 40px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.viewer-prev { left: -50px; }
+.viewer-next { right: -50px; }
+
+.viewer-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+@media (max-width: 768px) {
+    #scene {
+        align-items: flex-start;
+        padding-top: 100px;
+    }
+
+    #house {
+        width: 90vw;
+        height: 70vh;
+        margin-top: 20px;
+    }
+
+    .ui-controls {
+        width: calc(100vw - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .comparison-container {
+        flex-direction: column;
+    }
+
+    .photo-box img {
+        height: auto;
+        max-height: 40vh;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .viewer-content {
+        max-width: 100%;
+    }
+
+    .viewer-content img {
+        max-height: 70vh;
+    }
+
+    .viewer-prev {
+        left: 10px;
+    }
+
+    .viewer-next {
+        right: 10px;
+    }
+
+    .viewer-nav {
+        font-size: 32px;
+    }
 }

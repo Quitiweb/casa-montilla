@@ -51,6 +51,30 @@ let isDragging = false;
 let startX, startY;
 let currentRotateX = 60;
 let currentRotateZ = -20;
+let currentScale = 1;
+const MIN_SCALE = 0.7;
+const MAX_SCALE = 2;
+let pinchStartDistance = 0;
+let pinchStartScale = 1;
+let overlayCount = 0;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const applyTransform = () => {
+    house.style.transform = `scale(${currentScale}) rotateX(${currentRotateX}deg) rotateZ(${currentRotateZ}deg)`;
+};
+
+const lockScroll = () => {
+    overlayCount += 1;
+    document.body.classList.add('modal-open');
+};
+
+const unlockScroll = () => {
+    overlayCount = Math.max(overlayCount - 1, 0);
+    if (overlayCount === 0) {
+        document.body.classList.remove('modal-open');
+    }
+};
 
 scene.addEventListener('mousedown', (e) => {
     isDragging = true;
@@ -74,7 +98,7 @@ scene.addEventListener('mousemove', (e) => {
     if(currentRotateX < 0) currentRotateX = 0;
     if(currentRotateX > 90) currentRotateX = 90;
 
-    house.style.transform = `rotateX(${currentRotateX}deg) rotateZ(${currentRotateZ}deg)`;
+    applyTransform();
 
     startX = e.clientX;
     startY = e.clientY;
@@ -82,25 +106,60 @@ scene.addEventListener('mousemove', (e) => {
 
 // Soporte táctil
 scene.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        isDragging = false;
+        pinchStartDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        pinchStartScale = currentScale;
+        return;
+    }
+
     isDragging = true;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
 });
 
 scene.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        if (!pinchStartDistance) {
+            pinchStartDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            pinchStartScale = currentScale;
+        }
+        const distance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+        );
+        const scaleFactor = distance / pinchStartDistance;
+        currentScale = clamp(pinchStartScale * scaleFactor, MIN_SCALE, MAX_SCALE);
+        applyTransform();
+        return;
+    }
+
     if (!isDragging) return;
+    e.preventDefault();
     const deltaX = e.touches[0].clientX - startX;
     const deltaY = e.touches[0].clientY - startY;
 
     currentRotateZ += deltaX * 0.5;
     currentRotateX -= deltaY * 0.5;
-    house.style.transform = `rotateX(${currentRotateX}deg) rotateZ(${currentRotateZ}deg)`;
+    applyTransform();
 
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
 });
 
-window.addEventListener('touchend', () => isDragging = false);
+window.addEventListener('touchend', () => {
+    isDragging = false;
+    pinchStartDistance = 0;
+});
+
+applyTransform();
 
 
 // --- LÓGICA DEL MODAL ---
@@ -110,6 +169,53 @@ const hotspots = document.querySelectorAll('.hotspot');
 const modalTitle = document.getElementById('modal-title');
 const imgBefore = document.getElementById('img-before');
 const imgAfter = document.getElementById('img-after');
+const imageViewer = document.getElementById('image-viewer');
+const viewerImage = document.getElementById('viewer-img');
+const viewerCaption = document.getElementById('viewer-caption');
+const viewerClose = document.querySelector('.viewer-close');
+const viewerPrev = document.querySelector('.viewer-prev');
+const viewerNext = document.querySelector('.viewer-next');
+
+let activeGallery = [];
+let activeRoom = '';
+let currentSlide = 0;
+let viewerTouchStartX = null;
+
+const openModal = () => {
+    modal.classList.add('show');
+    lockScroll();
+};
+
+const closeModal = () => {
+    modal.classList.remove('show');
+    if (imageViewer.classList.contains('show')) {
+        closeViewer();
+    }
+    unlockScroll();
+};
+
+const showViewerSlide = (index) => {
+    if (!activeGallery.length) return;
+    const count = activeGallery.length;
+    currentSlide = (index + count) % count;
+    const { src, caption } = activeGallery[currentSlide];
+    viewerImage.src = src;
+    viewerCaption.innerText = `${caption} · ${activeRoom}`;
+};
+
+const openViewer = (index = 0) => {
+    if (!activeGallery.length) return;
+    imageViewer.classList.add('show');
+    showViewerSlide(index);
+    lockScroll();
+};
+
+const closeViewer = () => {
+    if (!imageViewer.classList.contains('show')) return;
+    imageViewer.classList.remove('show');
+    viewerImage.src = '';
+    unlockScroll();
+};
 
 hotspots.forEach(spot => {
     spot.addEventListener('click', (e) => {
@@ -119,19 +225,60 @@ hotspots.forEach(spot => {
 
         if (data) {
             modalTitle.innerText = data.title;
+            activeRoom = data.title;
+            activeGallery = [
+                { src: data.before, caption: 'Estado Actual' },
+                { src: data.after, caption: 'Diseño Futuro' }
+            ];
             // Pequeño truco para verificar en consola si la imagen carga
             console.log("Cargando:", data.before, data.after);
 
             imgBefore.src = data.before;
             imgAfter.src = data.after;
-            modal.style.display = "block";
+            openModal();
         } else {
             console.log("No hay datos para:", roomId);
         }
     });
 });
 
-closeBtn.onclick = () => modal.style.display = "none";
+closeBtn.onclick = closeModal;
 window.onclick = (e) => {
-    if (e.target == modal) modal.style.display = "none";
-}
+    if (e.target === modal) closeModal();
+};
+
+imgBefore.addEventListener('click', () => openViewer(0));
+imgAfter.addEventListener('click', () => openViewer(1));
+
+viewerClose.addEventListener('click', closeViewer);
+viewerPrev.addEventListener('click', () => showViewerSlide(currentSlide - 1));
+viewerNext.addEventListener('click', () => showViewerSlide(currentSlide + 1));
+
+imageViewer.addEventListener('click', (e) => {
+    if (e.target === imageViewer) {
+        closeViewer();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (!imageViewer.classList.contains('show')) return;
+    if (e.key === 'Escape') closeViewer();
+    if (e.key === 'ArrowLeft') showViewerSlide(currentSlide - 1);
+    if (e.key === 'ArrowRight') showViewerSlide(currentSlide + 1);
+});
+
+imageViewer.addEventListener('touchstart', (e) => {
+    if (!imageViewer.classList.contains('show')) return;
+    if (e.touches.length === 1) {
+        viewerTouchStartX = e.touches[0].clientX;
+    }
+});
+
+imageViewer.addEventListener('touchend', (e) => {
+    if (viewerTouchStartX === null) return;
+    const deltaX = e.changedTouches[0].clientX - viewerTouchStartX;
+    if (Math.abs(deltaX) > 50) {
+        showViewerSlide(deltaX > 0 ? currentSlide - 1 : currentSlide + 1);
+    }
+    viewerTouchStartX = null;
+});
