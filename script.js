@@ -26,6 +26,11 @@ const roomsData = {
         before: "img/07-garaje-v2.jpeg",
         after: "img/design/07-garaje-v2-design.jpeg"
     },
+    "cuarto_peques": {
+        title: "Cuarto de los Peques",
+        before: "img/07-garaje-v1.jpeg",
+        after: "img/design/07-garaje-v1-design.jpeg"
+    },
     "patio": {
         title: "Patio Exterior",
         before: "img/04-exterior-planta-baja.jpeg",
