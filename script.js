@@ -59,7 +59,7 @@ const roomsData = {
         "habitacion_gaming": {
             title: "Habitación Gaming",
             before: "img/09-habitacion-gaming-v1.png",
-            after: "img/design/09-habitacion-gaming-v1-design.png"
+            after: "img/design/09-habitacion-gaming-v2-design.png"
         },
     "habitacion_v1": {
         title: "Habitación Principal",
