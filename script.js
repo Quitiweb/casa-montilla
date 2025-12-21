@@ -51,6 +51,11 @@ const roomsData = {
         before: "img/09-habitacion-v3.jpeg",
         after: "img/design/09-habitacion-v3-design.png"
     },
+    "habitacion_balcon": {
+        title: "Habitación Balcón",
+        before: "img/09-habitacion-balcon.png",
+        after: "img/design/09-habitacion-balcon-design.png"
+    },
     "terraza1": {
         title: "Terraza Primera Planta",
         before: "img/11-terraza.jpeg",
